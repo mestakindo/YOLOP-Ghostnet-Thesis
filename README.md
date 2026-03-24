@@ -28,26 +28,12 @@ This repository presents an improved multi-task perception model based on YOLOP 
 
 ## ⚙️ Installation
 
-```bash
+
 git clone https://github.com/mestakindo/YOLOP-Ghostnet-Thesis.git
+
 cd YOLOP-Ghostnet-Thesis
+
 pip install -r requirements.txt
-
-# 🚗 YOLOP-GhostNet: Joint Perception for Autonomous Driving
-
-This repository presents an improved multi-task perception model based on the original YOLOP framework for autonomous driving scene understanding.
-
-The work focuses on improving lightweight perception performance and multi-task optimization for real-time deployment scenarios.
-
----
-
-## 📄 Conference Paper
-
-**Implementation of Joint Segmentation Semantic Understanding Method to Develop Autonomous Vehicle Driving Perception**
-
-Conference: 2025 9th International Conference on Instrumentation, Control, and Automation (ICA)  
-Date: August 2025  
-DOI: 10.1109/ICA65945.2025.11252505  
 
 ---
 
@@ -66,22 +52,74 @@ DOI: 10.1109/ICA65945.2025.11252505
 
 ## 🧠 Model Overview
 
-The proposed architecture follows a shared backbone multi-task perception design:
-
-
+```
 Input Image
-↓
+   ↓
 GhostNet Backbone
-↓
+   ↓
 Shared Feature Representation
-↓
-┌──────────────┬──────────────┬──────────────┐
-│ Detection │ Drivable Area│ Lane Line │
-│ Head │ Segmentation │ Segmentation │
-└──────────────┴──────────────┴──────────────┘
-
+   ↓
+ ┌──────────────┬──────────────┬──────────────┐
+ │ Detection    │ Drivable Area│ Lane Line    │
+ │ Head         │ Segmentation │ Segmentation │
+ └──────────────┴──────────────┴──────────────┘
+```
 
 ---
+---
+
+## 📈 Performance Comparison
+
+---
+
+## 📈 Experimental Results
+
+### 🚗 Object Detection Performance
+
+| Model | Precision | Recall | mAP@0.5 |
+|------|-----------|--------|---------|
+| YOLOP | 0.110 | 0.88 | 0.44 |
+| YOLOP-GhostNet (Ours) | 0.093 | 0.71 | **0.60** |
+
+---
+
+### 🛣 Lane Line Segmentation Performance
+
+| Model | Accuracy | IoU | mIoU |
+|------|----------|-----|------|
+| YOLOP | 0.699 | 0.266 | 0.625 |
+| YOLOP-GhostNet (Ours) | 0.699 | **0.305** | **0.642** |
+
+---
+
+### 🟩 Drivable Area Segmentation Performance
+
+| Model | Accuracy | IoU | mIoU |
+|------|----------|-----|------|
+| YOLOP | 0.974 | **0.859** | **0.914** |
+| YOLOP-GhostNet (Ours) | 0.971 | 0.849 | 0.907 |
+
+---
+
+### ⚡ Inference Speed
+
+| Model | Inference Time | NMS Time |
+|------|----------------|----------|
+| YOLOP | 0.0030 s/frame | 0.0007 s/frame |
+| YOLOP-GhostNet (Ours) | **0.0017 s/frame** | 0.0009 s/frame |
+
+## 🎯 Qualitative Results
+
+### Daytime Driving Scene
+
+![Day Result](D:\Tesis\Inference\Ghostnet (YOLOP(new)/result_day.jpg)
+
+---
+
+### Night Driving Scene
+
+![Night Result](D:\Tesis\Inference\Ghostnet (YOLOP(new)/result_night.jpg)
+
 
 ## ⚙️ Installation
 
