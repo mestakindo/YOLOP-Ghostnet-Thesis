@@ -108,17 +108,28 @@ Shared Feature Representation
 | YOLOP | 0.0030 s/frame | 0.0007 s/frame |
 | YOLOP-GhostNet (Ours) | **0.0017 s/frame** | 0.0009 s/frame |
 
+---
+
+## ⚙️ Model Complexity Analysis
+
+| Model | Parameters (Million) | Reduction |
+|------|----------------------|-----------|
+| Original YOLOP (Paper) | 48.0 | — |
+| YOLOP Baseline (Reproduced) | 7.96 | 83.4% ↓ vs Paper |
+| YOLOP-GhostNet (Ours) | **7.94** | **0.26% ↓ vs Baseline** |
+
+
 ## 🎯 Qualitative Results
 
 ### Daytime Driving Scene
 
-![Day Result](D:\Tesis\Inference\Ghostnet (YOLOP(new)/result_day.jpg)
+![Day Result](pictures/result_day.jpg)
 
 ---
 
 ### Night Driving Scene
 
-![Night Result](D:\Tesis\Inference\Ghostnet (YOLOP(new)/result_night.jpg)
+![Night Result](pictures/result_night.jpg)
 
 
 ## ⚙️ Installation
@@ -136,6 +147,56 @@ python tools/train.py --cfg lib/config/default.py
 You may modify configuration parameters depending on dataset path, batch size, or training strategy.
 
 ---
+### 🔬 Training Setup
+
+Two training configurations were evaluated:
+
+- **YOLOP(A)**: Baseline model using CSPDarknet-Tiny backbone across the shared feature extraction pipeline.
+- **YOLOP(B)**: Proposed model replacing segmentation branch backbone with **GhostNet**, while keeping other components identical to isolate backbone impact.
+
+---
+
+### 🧠 Implementation Details
+
+- Python Version: ≥ 3.9  
+- Framework: PyTorch 2.4.1 + TorchVision  
+- GPU: NVIDIA GeForce RTX 4080  
+- Configuration Management: YAML-based experiment settings  
+- Reproducibility: fixed random seed, version locking, checkpoint saving per experiment  
+
+---
+
+### 📂 Dataset Preparation
+
+- Dataset: BDD100K  
+- Split Ratio: **Train / Val / Test = 70 / 20 / 10**
+- Detection annotations converted from **COCO JSON → YOLO TXT format**
+- Segmentation masks generated as **PNG maps** for:
+  - Drivable Area  
+  - Lane Line  
+
+---
+
+### 🖼 Image Preprocessing & Augmentation
+
+- Input Resolution: **640 × 640 (Letterbox resize)**
+- Pixel Normalization applied  
+- Training augmentations:
+  - Horizontal Flip  
+  - Brightness / Contrast adjustment  
+  - Blur  
+  - Perspective Transform  
+- Optional detection enrichments:
+  - Mosaic  
+  - MixUp  
+
+---
+
+### ⚙️ DataLoader Configuration
+
+- Batch size adjusted according to GPU VRAM capacity  
+- Num workers optimized for throughput  
+- Pin memory enabled for faster GPU transfer  
 
 ## 🧪 Evaluation
 
