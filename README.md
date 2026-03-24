@@ -1,3 +1,8 @@
+![Conference](https://img.shields.io/badge/Conference-ICA%202025-blue)
+![Framework](https://img.shields.io/badge/PyTorch-2.4.1-red)
+![GPU](https://img.shields.io/badge/GPU-RTX%204080-green)
+![Status](https://img.shields.io/badge/Status-Research%20Prototype-orange)
+
 # 🚗 YOLOP-GhostNet: Joint Perception for Autonomous Driving
 
 This repository presents an improved multi-task perception model based on YOLOP for autonomous vehicle scene understanding.
@@ -11,18 +16,6 @@ This repository presents an improved multi-task perception model based on YOLOP 
 📍 2025 9th International Conference on Instrumentation, Control, and Automation (ICA)  
 📅 August 2025  
 🔗 DOI: 10.1109/ICA65945.2025.11252505  
-
----
-
-## ⭐ Contributions
-
-- Integration of **GhostNet backbone** for lightweight perception  
-- Replacement of activation with **SiLU activation function**  
-- Implementation of **SIoU Loss** for better localization performance  
-- Optimization of joint multi-task training for:
-  - Object Detection  
-  - Drivable Area Segmentation  
-  - Lane Line Segmentation  
 
 ---
 
@@ -64,11 +57,6 @@ Shared Feature Representation
  │ Head         │ Segmentation │ Segmentation │
  └──────────────┴──────────────┴──────────────┘
 ```
-
----
----
-
-## 📈 Performance Comparison
 
 ---
 
@@ -132,12 +120,6 @@ Shared Feature Representation
 ![Night Result](pictures/result_night.jpg)
 
 
-## ⚙️ Installation
-
-git clone https://github.com/mestakindo/YOLOP-Ghostnet-Thesis.git
-cd YOLOP-Ghostnet-Thesis
-pip install -r requirements.txt
-
 ## 🚀 Training
 
 To train the model using default configuration:
@@ -179,7 +161,6 @@ Two training configurations were evaluated:
 
 ### 🖼 Image Preprocessing & Augmentation
 
-- Input Resolution: **640 × 640 (Letterbox resize)**
 - Pixel Normalization applied  
 - Training augmentations:
   - Horizontal Flip  
@@ -193,10 +174,42 @@ Two training configurations were evaluated:
 ---
 
 ### ⚙️ DataLoader Configuration
-
 - Batch size adjusted according to GPU VRAM capacity  
-- Num workers optimized for throughput  
-- Pin memory enabled for faster GPU transfer  
+- Pin memory and worker settings tuned for training stability  
+---
+
+### 🧪 Training Hyperparameters 
+
+- Epochs: **240**
+- Batch Size per GPU: **16**
+- Optimizer: **Adam**
+- Initial Learning Rate (LR0): **0.001**
+- Final LR Factor (LRF): **0.2**
+- Momentum: **0.937**
+- Weight Decay: **0.0005**
+- Warmup Epochs: **3**
+- Anchor Threshold: **4.0**
+- Validation Frequency: **Every Epoch**
+---
+
+### 🧩 Loss Function Design
+
+Bounding box regression loss was modified by replacing the default IoU-based loss with **SIoU Loss** in the detection head.
+
+This modification aims to improve localization stability and convergence behaviour during multi-task joint optimization.
+---
+
+### ⚙️ Input & Augmentation Settings
+
+- Training Resolution: **320 × 192**
+- Original Image Size: **1280 × 720**
+- Horizontal Flip: Enabled  
+- HSV Augmentation: H=0.015 / S=0.7 / V=0.4  
+- Translation: 0.1  
+- Scale: 0.25  
+- Rotation: 10°  
+
+
 
 ## 🧪 Evaluation
 
@@ -208,6 +221,18 @@ GPU: NVIDIA RTX 4080
 Framework: PyTorch
 Dataset: BDD100K
 Training Strategy: Multi-task joint optimization
+
+---
+
+## 🔎 Key Findings
+
+- GhostNet integration significantly improves **mAP@0.5 (+36%)** compared to reproduced YOLOP baseline.
+- Lane segmentation quality improves with **higher IoU and mIoU**, indicating better boundary learning.
+- Drivable area segmentation remains stable with only minor performance degradation.
+- Inference speed improves by **43%**, demonstrating suitability for real-time deployment.
+- Parameter reduction confirms the lightweight design objective.
+
+Overall, the proposed YOLOP-GhostNet achieves better perception efficiency while maintaining competitive multi-task performance.
 
 ---
 
